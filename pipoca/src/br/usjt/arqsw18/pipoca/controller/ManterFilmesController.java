@@ -1,7 +1,13 @@
 package br.usjt.arqsw18.pipoca.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.usjt.arqsw18.pipoca.model.entity.Filme;
@@ -19,6 +25,21 @@ public class ManterFilmesController {
 	public String novoFilme(){
 		return "NovoFilme";
 	}
+	
+	/*
+	@RequestMapping("/inserir")
+	public String inserirFilme(@Valid Filme filme, BindingResult result, Model model){
+		try {
+			String titulo = filmeService.inserirFilme(filme);
+			filme.setTitulo(titulo);
+			model.addAttribute("filme", filme);
+			System.out.println(filme.toString());
+			return "Resultado";
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "erro";
+	} */
 	
 	@RequestMapping("/inserir")
 	public String inserirFilme(Filme filme, Model model) {

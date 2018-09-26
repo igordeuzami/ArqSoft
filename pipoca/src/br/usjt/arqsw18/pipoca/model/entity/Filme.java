@@ -1,14 +1,33 @@
 package br.usjt.arqsw18.pipoca.model.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Filme {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+//@Entity(name="tb_filme")
+public class Filme implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
+	
+	@NotNull 
+	@Size(max=128, min=2)
 	private String titulo;
+	
+	@Size(max=128, min=2)
 	private String diretor;
+	
+	@Size(max=350, min=15)
 	private String descricao;
+	
+	@Size(max=10, min=10)
 	private Date dataLancamento;
+	
+	@Size(max=200, min=15)
 	private String posterPath;
+	
+	@Size(max=100, min=1)
 	private int popularidade;
 	
 	public int getId() {
