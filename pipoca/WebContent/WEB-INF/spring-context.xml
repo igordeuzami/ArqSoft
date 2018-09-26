@@ -11,6 +11,7 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<context:component-scan base-package="br.usjt.arqsw18.pipoca" />
 	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

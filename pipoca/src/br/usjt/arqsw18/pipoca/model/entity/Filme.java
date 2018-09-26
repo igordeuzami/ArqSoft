@@ -1,34 +1,26 @@
 package br.usjt.arqsw18.pipoca.model.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//@Entity(name="tb_filme")
-public class Filme implements Serializable{
-	private static final long serialVersionUID = 1L;
-	private int id;
-	
+public class Filme {
 	@NotNull 
-	@Size(max=128, min=2)
+	@Min(value=1)
+	private int id;
+	@NotNull
+	@Size(min=2, max=100, message="Tamanho entre 2 e 100 caracteres")
 	private String titulo;
-	
-	@Size(max=128, min=2)
-	private String diretor;
-	
-	@Size(max=350, min=15)
+	@NotNull
+	@Size(min=20, max=4000, message="Tamanho entre 20 e 4000 caracteres")
 	private String descricao;
-	
-	@Size(max=10, min=10)
+	private double popularidade;
 	private Date dataLancamento;
-	
-	@Size(max=200, min=15)
 	private String posterPath;
-	
-	@Size(max=100, min=1)
-	private int popularidade;
+	private String diretor;
+	private Genero genero;
 	
 	public int getId() {
 		return id;
@@ -42,19 +34,18 @@ public class Filme implements Serializable{
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	public String getDiretor() {
-		return diretor;
-	}
-	public void setDiretor(String diretor) {
-		this.diretor = diretor;
-	}
 	public String getDescricao() {
 		return descricao;
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	public double getPopularidade() {
+		return popularidade;
+	}
+	public void setPopularidade(double popularidade) {
+		this.popularidade = popularidade;
+	}
 	public Date getDataLancamento() {
 		return dataLancamento;
 	}
@@ -67,19 +58,23 @@ public class Filme implements Serializable{
 	public void setPosterPath(String posterPath) {
 		this.posterPath = posterPath;
 	}
-	public int getPopularidade() {
-		return popularidade;
+	public String getDiretor() {
+		return diretor;
 	}
-	public void setPopularidade(int popularidade) {
-		this.popularidade = popularidade;
+	public void setDiretor(String diretor) {
+		this.diretor = diretor;
+	}
+	public Genero getGenero() {
+		return genero;
+	}
+	public void setGenero(Genero genero) {
+		this.genero = genero;
 	}
 	@Override
 	public String toString() {
-		return "Filme [id=" + id + ", titulo=" + titulo + ", diretor=" + diretor + ", descricao=" + descricao + 
-				", dataLancamento=" + dataLancamento + ", posterPath=" + posterPath + ", popularidade="
-				+ popularidade + "]";
+		return "Filme [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", popularidade=" + popularidade
+				+ ", dataLancamento=" + dataLancamento + ", posterPath=" + posterPath + ", diretor=" + diretor
+				+ ", genero=" + genero + "]";
 	}
-	
-	
 
 }
