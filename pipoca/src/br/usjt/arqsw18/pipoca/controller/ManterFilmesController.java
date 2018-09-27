@@ -31,7 +31,7 @@ public class ManterFilmesController {
 
 	@RequestMapping("/novo_filme")
 	public String novo(Model model, HttpSession session) {
-		try {
+		try {	
 			ArrayList<Genero> generos = gService.listarGeneros();
 			session.setAttribute("generos", generos);
 			return "CriarFilme";
@@ -44,6 +44,7 @@ public class ManterFilmesController {
 
 	@RequestMapping("/criar_filme")
 	public String criarFilme(@Valid Filme filme, BindingResult erros, Model model) {
+		System.out.println("Oi");
 		try {
 			if (!erros.hasErrors()) {
 				Genero genero = new Genero();

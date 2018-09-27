@@ -16,6 +16,7 @@ import br.usjt.arqsw18.pipoca.model.entity.Genero;
 public class FilmeDAO {
 	
 	public int inserirFilme(Filme filme) throws IOException {
+		System.out.println(filme.toString());
 		int id = -1;
 		String sql = "insert into Filme (titulo, descricao, diretor, posterpath, "
 				+ "popularidade, data_lancamento, id_genero) values (?,?,?,?,?,?,?)";
