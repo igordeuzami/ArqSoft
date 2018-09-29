@@ -11,12 +11,13 @@ import br.usjt.arqsw18.pipoca.model.entity.Filme;
 
 @Service
 public class FilmeService {
+	@Autowired
 	private FilmeDAO dao;
 	
-	@Autowired
-	public FilmeService(FilmeDAO fdao) {
-		dao = fdao;
-	}
+//	@Autowired
+//	public FilmeService(FilmeDAO fdao) {
+//		dao = fdao;
+//	}
 	
 	public Filme buscarFilme(int id) throws IOException{
 		return dao.buscarFilme(id);
