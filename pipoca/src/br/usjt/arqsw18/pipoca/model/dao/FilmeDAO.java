@@ -1,14 +1,13 @@
 package br.usjt.arqsw18.pipoca.model.dao;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,125 +16,76 @@ import br.usjt.arqsw18.pipoca.model.entity.Genero;
 
 @Repository
 public class FilmeDAO {
-	@PersistenceContext
+	
+	@PersistenceContext //Injeção de dependencia do EntityManager
 	EntityManager manager;
 	
-	public int inserirFilme(Filme filme){
-		System.out.println(filme.toString());
-		manager.persist(filme);
+	public int inserirFilme(Filme filme) throws IOException {
+		manager.persist(filme);		
 		return filme.getId();
-//		String sql = "insert into Filme (titulo, descricao, diretor, posterpath, "
-//				+ "popularidade, data_lancamento, id_genero) values (?,?,?,?,?,?,?)";
-//		
-//		try(Connection conn = ConnectionFactory.getConnection();
-//			PreparedStatement pst = conn.prepareStatement(sql);){
-//			
-//			pst.setString(1, filme.getTitulo());
-//			pst.setString(2, filme.getDescricao());
-//			pst.setString(3, filme.getDiretor());
-//			pst.setString(4, filme.getPosterPath());
-//			pst.setDouble(5, filme.getPopularidade());
-//			if(filme.getDataLancamento() != null) {
-//				pst.setDate(6, new java.sql.Date(filme.getDataLancamento().getTime()));
-//			} else {
-//				pst.setDate(6,  null);
-//			}
-//			pst.setInt(7, filme.getGenero().getId());			
-//			pst.execute();
-//			
-//			//obter o id criado
-//			String query = "select LAST_INSERT_ID()";
-//			try(PreparedStatement pst1 = conn.prepareStatement(query);
-//				ResultSet rs = pst1.executeQuery();){
-//
-//				if (rs.next()) {
-//					id = rs.getInt(1);
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			throw new IOException(e);
-//		}
-	}
-
+	}	
+	
 	public Filme buscarFilme(int id) throws IOException{
-		// TODO Auto-generated method stub
-		return null;
+		return manager.find(Filme.class, id);		
+	}
+	
+	public void atualizarFilme(Filme filme) throws IOException {
+		manager.merge(filme);		
+	}
+	
+	public void removerFilme(Filme filme) throws IOException {
+		manager.remove(manager.find(Filme.class, filme.getId()));
+	}
+	
+	public List<Filme> listarFilmes(Genero genero) throws IOException {
+		String jpql = "select f from Filme f where f.genero = :genero";
+		
+		Query query = manager.createQuery(jpql);
+		query.setParameter("genero", genero);
+		
+		@SuppressWarnings("unchecked")
+		List<Filme> result = query.getResultList();
+		return result;
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public List<Filme> listarFilmes(double popularidade) throws IOException {
+		String jpql = "select f from Filme f where f.popularidade = :chave";
+		Query query = manager.createQuery(jpql);
+		query.setParameter("chave", popularidade);
+		List<Filme> result = query.getResultList();
+		return result;
+	}
+	
+	public List<Filme> listarFilmes(Date dtInicio, Date dtFinal) throws IOException {
+
+		String jpql = "select f from Filme f where f.dataLancamento between :dtInicio and :dtFinal";
+		Query query = manager.createQuery(jpql);
+		
+		query.setParameter("dtInicio", dtInicio);
+		query.setParameter("dtFinal", dtFinal);
+
+		@SuppressWarnings("unchecked")
+		List<Filme> result = query.getResultList();
+			
+		return result;
+	}
+	
+	
+	public List<Filme> listarFilmes(String chave) throws IOException {
+
+		String jpql = "select f from Filme f where f.titulo like :chave";
+
+		Query query = manager.createQuery(jpql);
+		query.setParameter("chave", "%" + chave + "%");
+
+		@SuppressWarnings("unchecked")
+		List<Filme> result = query.getResultList();
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Filme> listarFilmes(String chave) throws IOException {		
-		return (ArrayList<Filme>) manager.createQuery("select f from Filme f where f.titulo like :titulo")
-					.setParameter("titulo", "%" + chave.toUpperCase() + "%")
-					.getResultList();
-//		ArrayList<Filme> lista = new ArrayList<>();
-//		String sql = "select f.id, f.titulo, f.descricao, f.diretor, f.posterpath, "
-//				+ "f. popularidade, f.data_lancamento, f.id_genero, g.nome "
-//				+ "from filme f, genero g "
-//				+ "where f.id_genero = g.id and upper(f.titulo) like ?";
-//		try(Connection conn = ConnectionFactory.getConnection();
-//			PreparedStatement pst = conn.prepareStatement(sql);){
-//			
-//			pst.setString(1, "%" + chave.toUpperCase() + "%");
-//		
-//			try(ResultSet rs = pst.executeQuery();){
-//			
-//				Filme filme;
-//				Genero genero;
-//				while(rs.next()) {
-//					filme = new Filme();
-//					filme.setId(rs.getInt("f.id"));
-//					filme.setTitulo(rs.getString("f.titulo"));
-//					filme.setDescricao(rs.getString("f.descricao"));
-//					filme.setDiretor(rs.getString("f.diretor"));
-//					filme.setPosterPath(rs.getString("f.posterpath"));
-//					filme.setDataLancamento(rs.getDate("f.data_lancamento"));
-//					genero = new Genero();
-//					genero.setId(rs.getInt("f.id_genero"));
-//					genero.setNome(rs.getString("g.nome"));
-//					filme.setGenero(genero);
-//					lista.add(filme);
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			throw new IOException(e);
-//		}
-//				
-//		return lista;
+	public List<Filme> listarFilmes() throws IOException {
+		return manager.createQuery("select f from Filme f").getResultList();
 	}
-	
-	public ArrayList<Filme> listarFilmes() throws IOException {
-		ArrayList<Filme> lista = new ArrayList<>();
-		String sql = "select f.id, f.titulo, f.descricao, f.diretor, f.posterpath, "
-				+ "f. popularidade, f.data_lancamento, f.id_genero, g.nome "
-				+ "from filme f, genero g "
-				+ "where f.id_genero = g.id";
-		try(Connection conn = ConnectionFactory.getConnection();
-			PreparedStatement pst = conn.prepareStatement(sql);
-			ResultSet rs = pst.executeQuery();){
-			
-			Filme filme;
-			Genero genero;
-			while(rs.next()) {
-				filme = new Filme();
-				filme.setId(rs.getInt("f.id"));
-				filme.setTitulo(rs.getString("f.titulo"));
-				filme.setDescricao(rs.getString("f.descricao"));
-				filme.setDiretor(rs.getString("f.diretor"));
-				filme.setPosterPath(rs.getString("f.posterpath"));
-				filme.setDataLancamento(rs.getDate("f.data_lancamento"));
-				genero = new Genero();
-				genero.setId(rs.getInt("f.id_genero"));
-				genero.setNome(rs.getString("g.nome"));
-				filme.setGenero(genero);
-				lista.add(filme);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IOException(e);
-		}				
-		return lista;
-	}
-
 }

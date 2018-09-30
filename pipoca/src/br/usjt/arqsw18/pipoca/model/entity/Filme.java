@@ -9,14 +9,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Entity
+//@Table(name="Filme") Este parametro só eh necessario quando o nome da table no banco difere do nome da classe
 public class Filme {
-	
 	@Id
+	@NotNull
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
@@ -24,18 +28,26 @@ public class Filme {
 	@Size(min=2, max=100, message="Tamanho entre 2 e 100 caracteres")
 	private String titulo;
 	
-	@NotNull
-	@Size(min=20, max=4000, message="Tamanho entre 20 e 4000 caracteres")
+	@Size(max=4000, message="Tamanho entre 20 e 4000 caracteres")
 	private String descricao;
+	
+	@Max(value=100)
+	@Min(value=1)
 	private double popularidade;
 	
-	@Column(name="data_lancamento")
+	@Temporal(value=TemporalType.DATE)
+	@Column(name="data_Lancamento")
 	private Date dataLancamento;
+	
+	@Size(max=200, message="Tamanho máximo de 200 caracteres")
 	private String posterPath;
+	
+	@Size(max=60, message="Tamanho máximo de 60 caracteres")
 	private String diretor;
 	
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_genero")
+	@JoinColumn(name="id_genero")
 	private Genero genero;
 	
 	public int getId() {

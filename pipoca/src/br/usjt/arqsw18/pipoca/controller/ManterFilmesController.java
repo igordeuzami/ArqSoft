@@ -2,9 +2,9 @@ package br.usjt.arqsw18.pipoca.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,10 @@ import br.usjt.arqsw18.pipoca.model.service.GeneroService;
 
 @Controller
 public class ManterFilmesController {
+	
 	@Autowired
 	private FilmeService fService;
+	
 	@Autowired
 	private GeneroService gService;
 
@@ -30,11 +32,10 @@ public class ManterFilmesController {
 		return "index";
 	}
 
-	@Transactional	
 	@RequestMapping("/novo_filme")
 	public String novo(Model model, HttpSession session) {
-		try {	
-			ArrayList<Genero> generos = gService.listarGeneros();
+		try {
+			List<Genero> generos = gService.listarGeneros();
 			session.setAttribute("generos", generos);
 			return "CriarFilme";
 		} catch (IOException e) {
@@ -44,13 +45,13 @@ public class ManterFilmesController {
 		}
 	}
 
-	@Transactional	
 	@RequestMapping("/criar_filme")
 	public String criarFilme(@Valid Filme filme, BindingResult erros, Model model) {
-		System.out.println("Oi");
 		try {
 			if (!erros.hasErrors()) {
-				Genero genero = gService.buscarGenero(filme.getGenero().getId());
+				Genero genero = new Genero();
+				genero.setId(filme.getGenero().getId());
+				genero.setNome(gService.buscarGenero(genero.getId()).getNome());
 				filme.setGenero(genero);
 
 				filme = fService.inserirFilme(filme);
@@ -74,7 +75,6 @@ public class ManterFilmesController {
 		return "ListarFilmes";
 	}
 
-	@Transactional	
 	@RequestMapping("/listar_filmes")
 	public String listarFilmes(HttpSession session, Model model, String chave) {
 		try {
@@ -82,9 +82,9 @@ public class ManterFilmesController {
 
 			ArrayList<Filme> lista;
 			if (chave != null && chave.length() > 0) {
-				lista = fService.listarFilmes(chave);
+				lista = (ArrayList<Filme>) fService.listarFilmes(chave);
 			} else {
-				lista = fService.listarFilmes();
+				lista = (ArrayList<Filme>) fService.listarFilmes();
 			}
 			session.setAttribute("lista", lista);
 			return "ListarFilmes";
