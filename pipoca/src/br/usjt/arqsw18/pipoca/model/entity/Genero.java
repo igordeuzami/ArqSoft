@@ -9,16 +9,13 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Genero {
-
 	@Id
 	@NotNull
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
 	@NotNull
-	@Size(max=60, message="Tamanho máximo de 60 caracteres")	
+	@Size(max=60)
 	private String nome;
-	
 	public int getId() {
 		return id;
 	}

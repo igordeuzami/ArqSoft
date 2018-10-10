@@ -42,36 +42,37 @@
 				<c:import url="Menu.jsp"/>
                 <!-- Container Principal -->
 	<div id="main" class="container">
-		<h3 class="page-header">${filme.id} - ${filme.titulo}</h3>
+		<h3 class="page-header">${filme.id} - ${filme.title}</h3>
 		<div class="row">
 			<div class="col-md-4">
-				<img alt="?" src="${filme.posterPath}" class="img-responsive">
+				<img alt="?" src="https://image.tmdb.org/t/p/w500/${filme.poster_path}" class="img-responsive">
 			</div>
 			<div class="col-md-8">
-				<div class="row">
+		<%-- 		<div class="row">
 					<div class="col-md-12">
 						<p><strong>Gênero:&nbsp;</strong>${filme.genero.nome}</p>
 					</div>
-				</div>
-				<div class="row">
+				</div> --%>
+<%-- 				<div class="row">
 					<div class="col-md-12">
 						<p><strong>Direção:&nbsp;</strong>${filme.diretor}</p>
 					</div>
-				</div>
+				</div> --%>
 				<div class="row">
 					<div class="col-md-12">
-						<p>${filme.descricao}</p>
+						<p>${filme.overview}</p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<p><strong>Lançamento:&nbsp;</strong>
-							<fmt:formatDate value="${filme.dataLancamento}" pattern="dd/MM/yyyy"/></p>
+						<%-- 	<fmt:formatDate value="${filme.dataLancamento}" pattern="dd/MM/yyyy"/></p> --%>
+							${filme.release_date}</p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<p><strong>Popularidade:&nbsp;</strong>${filme.popularidade}</p>
+						<p><strong>Popularidade:&nbsp;</strong>${filme.popularity}</p>
 					</div>
 				</div>
 			</div>
@@ -81,7 +82,7 @@
 			<div class="col-md-12">
 				<a href="alterar_filme?id=${filme.id}" class="btn btn-primary">Editar</a> 
 				<a href="#" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">Excluir</a> 
-				<a href="listar_filmes" class="btn btn-default">Voltar</a>
+				<a href="listar_filmes_tmdb" class="btn btn-default">Voltar</a>
 			</div>
 		</div>
 	</div>

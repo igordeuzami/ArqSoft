@@ -76,7 +76,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Título</th>
-                                    <th>Direção</th>
+                                    <!-- <th>Direção</th> -->
                                     <th>Lançamento</th>
                                     <th>Gênero</th>
                                     <th class="actions">Ações</th>
@@ -89,19 +89,20 @@
                                                ${filme.id }
                                             </td>
                                             <td>
-                                                ${filme.titulo }
+                                                ${filme.title }
+                                            </td>
+                     <%--                        <td>
+                                                ${filme.poster_path }
+                                            </td> --%>
+                                            <td>
+                                                <%-- <fmt:formatDate value="${filme.release_date}" pattern="dd/MM/yyyy"/> --%>
+                                                ${ filme.release_date }
                                             </td>
                                             <td>
-                                                ${filme.diretor }
-                                            </td>
-                                            <td>
-                                                <fmt:formatDate value="${filme.dataLancamento}" pattern="dd/MM/yyyy"/>
-                                            </td>
-                                            <td>
-                                                ${filme.genero.nome}
+                                                <%-- ${filme.genero.nome} --%>
                                             </td>
                                             <td class="actions">
-                                                <a class="btn btn-success btn-xs" href="visualizar_filme?id=${filme.id}">Visualizar</a>
+                                                <a class="btn btn-success btn-xs" href="visualizar_filme_tmdb?id=${filme.id}">Visualizar</a>
                                                 <a class="btn btn-warning btn-xs" href="alterar_filme?id=${filme.id}">Editar</a>
                                                 <button id="btn${filme.id }%>" type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-modal" data-filme="${filme.id }">Excluir</button>
                                             </td>
